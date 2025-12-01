@@ -1,0 +1,148 @@
+<h2 class="page-title">Issue Management System</h2>
+
+<div class="create-btn-container">
+  <a [routerLink]="['/issues/create']">
+    <button class="create-btn">+ Create Issue</button>
+  </a>
+</div>
+
+
+<!-- NEW STYLISH SUMMARY CARDS -->
+<div style="
+  display: flex;
+  gap: 25px;
+  margin-bottom: 25px;
+  justify-content: center;
+">
+
+<div class="summary-card open-card">
+  <h4>OPEN</h4>
+  <p>{{ issueCounts.OPEN || 0 }}</p>
+</div>
+
+<div class="summary-card progress-card">
+  <h4>IN PROGRESS</h4>
+  <p>{{ issueCounts.IN_PROGRESS || 0 }}</p>
+</div>
+
+<div class="summary-card resolved-card">
+  <h4>RESOLVED</h4>
+  <p>{{ issueCounts.RESOLVED || 0 }}</p>
+</div>
+
+<div class="summary-card closed-card">
+  <h4>CLOSED</h4>
+  <p>{{ issueCounts.CLOSED || 0 }}</p>
+</div>
+
+</div>
+
+<!-- FILTERS & SEARCH -->
+<div style="margin-bottom: 20px;">
+
+<!-- FILTER TOOLBAR -->
+<div class="filters-box">
+
+  <label>Sort By:</label>
+  <select [(ngModel)]="sortOption" (change)="applySorting()">
+    <option value="">None</option>
+    <option value="titleAsc">Title: A → Z</option>
+    <option value="titleDesc">Title: Z → A</option>
+    <option value="priorityHigh">Priority: High → Low</option>
+    <option value="priorityLow">Priority: Low → High</option>
+    <option value="dateNew">Created Date: Newest First</option>
+    <option value="dateOld">Created Date: Oldest First</option>
+  </select>
+
+  <label>Priority:</label>
+  <select [(ngModel)]="priorityFilter" (change)="applyFilters()">
+    <option value="">All</option>
+    <option value="LOW">Low</option>
+    <option value="MEDIUM">Medium</option>
+    <option value="HIGH">High</option>
+  </select>
+
+  <label>Status:</label>
+  <select [(ngModel)]="statusFilter" (change)="applyFilters()">
+    <option value="">All</option>
+    <option value="OPEN">Open</option>
+    <option value="IN_PROGRESS">In Progress</option>
+    <option value="RESOLVED">Resolved</option>
+    <option value="CLOSED">Closed</option>
+  </select>
+
+  <label>Title:</label>
+  <input type="text" [(ngModel)]="titleSearch" placeholder="Search title">
+
+  <button (click)="searchByTitle()">Search</button>
+
+  <label>Assignee:</label>
+  <input type="text" [(ngModel)]="assigneeSearch" placeholder="Search assignee">
+
+  <button (click)="searchByAssignee()">Search</button>
+
+  <button class="reset-btn" (click)="resetFilters()">Reset</button>
+
+</div>
+
+
+<!-- TABLE -->
+<div class="table-wrapper">
+  <table width="100%">
+
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Priority</th>
+      <th>Status</th>
+      <th>Assignee</th>
+      <th>Created</th>
+      <th>Updated</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let issue of issues | slice:(currentPage - 1) * pageSize : currentPage * pageSize">
+      <td>{{ issue.id }}</td>
+      <td>{{ issue.title }}</td>
+      <td>{{ issue.priority }}</td>
+      <td>{{ issue.status }}</td>
+      <td>{{ issue.assignee }}</td>
+      <td>{{ issue.createdDate | date:'short' }}</td>
+      <td>{{ issue.updatedDate | date:'short' }}</td>
+
+      <td>
+  <button class="delete-btn" (click)="deleteIssue(issue.id)">Delete</button>
+
+  <a [routerLink]="['/issues/edit', issue.id]">
+    <button class="edit-btn">Edit</button>
+  </a>
+</td>
+
+    </tr>
+  </tbody>
+</table>
+</div>
+<!-- PAGINATION CONTROL -->
+<div class="pagination-box">
+
+  <button class="pagination-btn"
+          (click)="prevPage()"
+          [disabled]="currentPage === 1">
+    Previous
+  </button>
+
+  <span class="current-page">
+    Page {{ currentPage }} of {{ totalPages }}
+  </span>
+
+  <button class="pagination-btn"
+          (click)="nextPage()"
+          [disabled]="currentPage === totalPages">
+    Next
+  </button>
+
+</div>
+

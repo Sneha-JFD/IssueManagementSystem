@@ -1,0 +1,62 @@
+<h2 class="form-title">Edit Issue</h2>
+
+<div class="form-container fade-in">
+
+  <form (ngSubmit)="updateIssue()" #f="ngForm">
+
+    <!-- Title -->
+    <div class="form-group">
+      <label>Title</label>
+      <input type="text" name="title" [(ngModel)]="issue.title" placeholder="Enter title">
+    </div>
+
+    <!-- Description -->
+    <div class="form-group">
+      <label>Description</label>
+      <textarea name="description" [(ngModel)]="issue.description" placeholder="Enter description"></textarea>
+    </div>
+
+    <div class="form-row">
+
+      <!-- Priority -->
+      <div class="form-group">
+        <label>Priority</label>
+        <select [(ngModel)]="issue.priority" name="priority">
+          <option value="">Select</option>
+          <option value="LOW">Low</option>
+          <option value="MEDIUM">Medium</option>
+          <option value="HIGH">High</option>
+        </select>
+      </div>
+
+      <!-- Status -->
+      <div class="form-group">
+        <label>Status</label>
+        <select [(ngModel)]="issue.status" name="status">
+          <option value="OPEN">Open</option>
+          <option value="IN_PROGRESS">In Progress</option>
+          <option value="RESOLVED">Resolved</option>
+          <option value="CLOSED">Closed</option>
+        </select>
+      </div>
+
+      <!-- Assignee -->
+      <div class="form-group">
+        <label>Assignee</label>
+        <select [(ngModel)]="issue.assignee" name="assignee">
+          <option value="">Select Assignee</option>
+          <option *ngFor="let a of assignees" [value]="a">{{ a }}</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- Buttons -->
+    <div class="button-row">
+      <button type="submit" class="submit-btn">Update Issue</button>
+      <button type="button" class="cancel-btn" (click)="router.navigate(['/issues'])">Cancel</button>
+    </div>
+
+  </form>
+
+</div>
