@@ -116,6 +116,3 @@ This project meets the assignment requirements:
 - GitHub deliverable  
 
 
-Share your **GitHub repository link** via email.
-
-# IssueManagementSystem
